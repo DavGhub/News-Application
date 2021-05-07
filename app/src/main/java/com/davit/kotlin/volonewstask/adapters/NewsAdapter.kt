@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.davit.kotlin.volonewstask.R
@@ -42,15 +43,7 @@ class NewsAdapter(private val context: Context, private val newsModel: NewsModel
         holder.star.setOnClickListener {
             starClickListener?.let {
                 starClickListener?.starClick(currentItem)
-                if(holder.star.drawable == context.getDrawable(R.drawable.ic_star_filled)){
-                    Glide.with(context)
-                        .load(R.drawable.ic_star_not_filled)
-                        .into(holder.star)
-                }else{
-                    Glide.with(context)
-                        .load(R.drawable.ic_star_filled)
-                        .into(holder.star)
-                }
+                holder.star.setImageResource(R.drawable.ic_star_filled)
             }
         }
     }
