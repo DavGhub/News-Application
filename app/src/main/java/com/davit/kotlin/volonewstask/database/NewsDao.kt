@@ -6,6 +6,7 @@ import com.davit.kotlin.volonewstask.models.NewsModelItem
 
 @Dao
 interface NewsDao {
+    //
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNews(news: NewsEntity?)

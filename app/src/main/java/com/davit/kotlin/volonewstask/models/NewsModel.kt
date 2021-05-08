@@ -1,8 +1,5 @@
 package com.davit.kotlin.volonewstask.models
 
-class NewsModel : ArrayList<NewsModelItem>(){
-    val data:List<NewsModelItem>
-        get() {
-            return data
-        }
-}
+class NewsModel(
+    val listNews : ArrayList<NewsModelItem>
+):ArrayList<NewsModelItem>()

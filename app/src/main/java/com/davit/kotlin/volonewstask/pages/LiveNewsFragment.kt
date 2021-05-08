@@ -7,19 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davit.kotlin.volonewstask.adapters.NewsAdapter
+import com.davit.kotlin.volonewstask.adapters.NewsPagedListAdapter
 import com.davit.kotlin.volonewstask.databinding.FragmentLiveNewsBinding
 import com.davit.kotlin.volonewstask.models.NewsModel
 import com.davit.kotlin.volonewstask.models.NewsModelItem
 import com.davit.kotlin.volonewstask.viewmodels.NewsViewModel
 
 
-class LiveNewsFragment : Fragment(), NewsAdapter.OnStarClickListener {
+class LiveNewsFragment : Fragment(),
+    NewsPagedListAdapter.OnStarClickListener {
 
     private lateinit var binding:FragmentLiveNewsBinding
     private lateinit var newsViewModel: NewsViewModel
-    private lateinit var newsAdapter: NewsAdapter
+//    private lateinit var newsAdapter: NewsAdapter
+    private lateinit var newsPagedAdapter:NewsPagedListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -35,13 +39,17 @@ class LiveNewsFragment : Fragment(), NewsAdapter.OnStarClickListener {
 
         setupObservers()
 
-        newsViewModel.fetchNews()
+//        newsViewModel.fetchNews()
     }
 
     private fun setupObservers(){
         newsViewModel.newsLiveData.observe(this, {
-            initNewsAdapter(it)
+//            initNewsAdapter(it)
             Log.e("LiveNews","updated data: $it")
+        })
+
+        newsViewModel.getPagedLiveData().observe(this,{
+            initNewsPagedAdapter(it)
         })
 
         newsViewModel.failRequestLiveData.observe(this, {
@@ -49,16 +57,24 @@ class LiveNewsFragment : Fragment(), NewsAdapter.OnStarClickListener {
         })
     }
 
-    private fun initNewsAdapter(newsModel: NewsModel){
-        newsAdapter = NewsAdapter(requireActivity(),newsModel)
-        newsAdapter.setOnStarClickListener(this)
+//    private fun initNewsAdapter(newsModel: NewsModel){
+//        newsAdapter = NewsAdapter(requireActivity(),newsModel)
+//        newsAdapter.setOnStarClickListener(this)
+//        val layoutManager = LinearLayoutManager(requireActivity())
+//        binding.newsRecyclerview.layoutManager = layoutManager
+//        binding.newsRecyclerview.adapter = newsAdapter
+//    }
+
+    private fun initNewsPagedAdapter(newsModelPagedList: PagedList<NewsModelItem>){
+        newsPagedAdapter = NewsPagedListAdapter(requireActivity())
+        newsPagedAdapter.setOnStarClickListener(this)
+        newsPagedAdapter.submitList(newsModelPagedList)
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.newsRecyclerview.layoutManager = layoutManager
-        binding.newsRecyclerview.adapter = newsAdapter
+        binding.newsRecyclerview.adapter = newsPagedAdapter
     }
 
     override fun starClick(item: NewsModelItem) {
-        // insert to database
         newsViewModel.insertData(requireActivity(),item)
     }
 }

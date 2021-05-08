@@ -1,7 +1,5 @@
 package com.davit.kotlin.volonewstask.models
 
-import androidx.room.Entity
-
 data class NewsModelItem(
     val events: List<Event>,
     val featured: Boolean,

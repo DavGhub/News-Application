@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 
 class NewsRepository {
 
+    //
+
     companion object {
 
         var newsDatabase: NewsDatabase? = null

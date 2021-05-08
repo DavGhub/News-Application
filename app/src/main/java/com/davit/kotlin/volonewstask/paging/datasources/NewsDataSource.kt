@@ -19,9 +19,11 @@ class NewsDataSource : PageKeyedDataSource<Long,NewsModelItem>() {
     override fun loadInitial(params: LoadInitialParams<Long>, callback: LoadInitialCallback<Long, NewsModelItem>) {
         newsService?.fetchNews(10,0)?.enqueue(object: Callback<NewsModel> {
             override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
-                Log.e("Response","response: ${response.body().toString()}")
+                Log.e("loadInitial","response: ${response.body().toString()}")
                 Log.e("URL","url: ${response.raw().request().url()}")
-                response.body()?.data?.let { callback.onResult(it, null, 2L) }
+                val res = response.body()!!
+                Log.e("Type","of: ${res.listNews}")
+                response.body()?.listNews?.let { callback.onResult(it, null, 2L) }
                 newsLiveData.postValue(response.body())
             }
 
@@ -40,9 +42,9 @@ class NewsDataSource : PageKeyedDataSource<Long,NewsModelItem>() {
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<Long, NewsModelItem>) {
         newsService?.fetchNews(10,(params.key).toInt())?.enqueue(object: Callback<NewsModel> {
             override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
-                Log.e("Response","response: ${response.body().toString()}")
-                Log.e("URL","url: ${response.raw().request().url()}")
-                response.body()?.data?.let { callback.onResult(it,  params.key+1) }
+                Log.e("loadAfter","response: ${response.body().toString()}")
+                Log.e("URL next","url: ${response.raw().request().url()}")
+                response.body()?.listNews?.let { callback.onResult(it,  params.key+1) }
                 newsLiveData.postValue(response.body())
             }
 

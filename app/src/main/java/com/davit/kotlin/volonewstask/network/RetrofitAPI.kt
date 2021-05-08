@@ -10,5 +10,5 @@ interface RetrofitAPI {
 //    @Headers("Content-Type: application/json")
     @GET("articles")
     fun fetchNews(@Query("_limit")limit:Int,@Query("_start")start:Int):Call<NewsModel>
-
+//
 }

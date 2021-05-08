@@ -14,6 +14,8 @@ import com.davit.kotlin.volonewstask.models.NewsModel
 
 class SavedNewsAdapter(private val context: Context, private val savedNews: List<NewsEntity>): RecyclerView.Adapter<SavedNewsAdapter.SavedNewsViewHolder>()  {
 
+    //
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedNewsViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.saved_news_item,parent,false)
         return SavedNewsViewHolder(view)

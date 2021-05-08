@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "news_table")
 data class NewsEntity(
+    //
 
     @PrimaryKey
     @NonNull
