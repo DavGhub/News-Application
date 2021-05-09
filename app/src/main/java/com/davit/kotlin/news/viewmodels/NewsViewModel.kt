@@ -9,11 +9,8 @@ import androidx.paging.PagedList
 import com.davit.kotlin.news.database.NewsEntity
 import com.davit.kotlin.news.models.NewsModel
 import com.davit.kotlin.news.models.NewsModelItem
-import com.davit.kotlin.news.network.RetrofitAPI
-import com.davit.kotlin.news.network.RetrofitApiService
 import com.davit.kotlin.news.paging.datasources.NewsDataSource
 import com.davit.kotlin.news.paging.sourcefactory.NewsDataSourceFactory
-import com.davit.kotlin.news.paging.sourcefactory.NewsSourceFactory
 import com.davit.kotlin.news.repository.NewsRepository
 
 class NewsViewModel : ViewModel() {
