@@ -10,15 +10,17 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.davit.kotlin.news.R
 import com.davit.kotlin.news.models.NewsModelItem
 
 class NewsPagedListAdapter constructor(private val context:Context) : PagedListAdapter<NewsModelItem,NewsPagedListAdapter.NewsViewHolder>(NEWS_COMPARATOR) {
 
     private var starClickListener:OnStarClickListener? = null
+    private val favoritesList = mutableSetOf<Int>()
 
     interface OnStarClickListener{
-        fun starClick(item:NewsModelItem)
+        fun starClick(item:NewsModelItem,startTag:Int)
     }
 
     fun setOnStarClickListener(listener:OnStarClickListener){
@@ -31,22 +33,41 @@ class NewsPagedListAdapter constructor(private val context:Context) : PagedListA
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val currentItem: NewsModelItem? = getItem(holder.adapterPosition)
+        val currentPosition = holder.adapterPosition
+        val currentItem: NewsModelItem? = getItem(currentPosition)
         Glide.with(context)
             .load(currentItem?.imageUrl)
             .error(R.drawable.ic_launcher_foreground)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(holder.news_image)
 
         holder.news_title.text = currentItem?.title
         holder.news_description.text = currentItem?.summary
+        holder.star.tag = 1
 
         holder.star.setOnClickListener {
             starClickListener?.let {
-                currentItem?.let {
-                    starClickListener?.starClick(currentItem)
+                if(holder.star.tag == 1){
+                    holder.star.setImageResource(R.drawable.ic_star_filled)
+                    holder.star.tag = 2
+                    favoritesList.add(currentPosition)
+                }else{
+                    holder.star.setImageResource(R.drawable.ic_star_not_filled)
+                    holder.star.tag = 1
+                    favoritesList.remove(currentPosition)
                 }
-                holder.star.setImageResource(R.drawable.ic_star_filled)
+                val tag:Int = (holder.star.tag) as Int
+                currentItem?.let {
+                    starClickListener?.starClick(currentItem,tag)
+                }
             }
+        }
+
+        if(favoritesList.contains(currentPosition)){
+            holder.star.setImageResource(R.drawable.ic_star_filled)
+        }else{
+            holder.star.setImageResource(R.drawable.ic_star_not_filled)
         }
     }
 

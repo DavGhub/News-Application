@@ -16,8 +16,6 @@ import com.davit.kotlin.news.viewmodels.NewsViewModel
 
 class FavoriteNewsFragment : Fragment() {
 
-    //
-
     private lateinit var binding: FragmentFavoriteNewsBinding
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var savedNewsAdapter:SavedNewsAdapter

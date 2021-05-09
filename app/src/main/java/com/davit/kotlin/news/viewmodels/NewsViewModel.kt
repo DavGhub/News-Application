@@ -24,7 +24,7 @@ class NewsViewModel : ViewModel() {
     private val _failRequestLiveData = MutableLiveData<String>()
     val failRequestLiveData: LiveData<String> = _failRequestLiveData
 
-    private val newsService = RetrofitApiService.getNewsService()?.create(RetrofitAPI::class.java)
+//    private val newsService = RetrofitApiService.getNewsService()?.create(RetrofitAPI::class.java)
 
     var newsEntityLiveData: LiveData<List<NewsEntity>>? = null
 
@@ -54,6 +54,10 @@ class NewsViewModel : ViewModel() {
     fun getSavedNewsLiveData(context: Context) : LiveData<List<NewsEntity>>? {
         newsEntityLiveData = NewsRepository.getNews(context)
         return newsEntityLiveData
+    }
+
+    fun deleteNewsFromFavorites(context: Context,news: NewsModelItem){
+        NewsRepository.deleteNews(context,news)
     }
 
 //    fun fetchNews(){

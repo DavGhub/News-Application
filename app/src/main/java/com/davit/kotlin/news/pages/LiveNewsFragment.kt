@@ -36,6 +36,7 @@ class LiveNewsFragment : Fragment(),
         newsViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
         setupObservers()
+        initNewsPagedAdapter()
 
 //        newsViewModel.fetchNews()
     }
@@ -47,7 +48,7 @@ class LiveNewsFragment : Fragment(),
         })
 
         newsViewModel.getPagedLiveData().observe(this,{
-            initNewsPagedAdapter(it)
+            newsPagedAdapter.submitList(it)
         })
 
         newsViewModel.failRequestLiveData.observe(this, {
@@ -63,16 +64,19 @@ class LiveNewsFragment : Fragment(),
 //        binding.newsRecyclerview.adapter = newsAdapter
 //    }
 
-    private fun initNewsPagedAdapter(newsModelPagedList: PagedList<NewsModelItem>){
+    private fun initNewsPagedAdapter(){
         newsPagedAdapter = NewsPagedListAdapter(requireActivity())
         newsPagedAdapter.setOnStarClickListener(this)
-        newsPagedAdapter.submitList(newsModelPagedList)
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.newsRecyclerview.layoutManager = layoutManager
         binding.newsRecyclerview.adapter = newsPagedAdapter
     }
 
-    override fun starClick(item: NewsModelItem) {
-        newsViewModel.insertData(requireActivity(),item)
+    override fun starClick(item: NewsModelItem,startTag:Int) {
+        if(startTag == 2){
+            newsViewModel.insertData(requireActivity(),item)
+        }else{
+            newsViewModel.deleteNewsFromFavorites(requireActivity(),item)
+        }
     }
 }

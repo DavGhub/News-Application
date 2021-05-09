@@ -1,4 +1,4 @@
-package com.davit.kotlin.volonewstask
+package com.davit.kotlin.news
 
 import org.junit.Test
 
