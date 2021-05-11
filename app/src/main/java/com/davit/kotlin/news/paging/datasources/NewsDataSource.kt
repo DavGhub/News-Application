@@ -21,7 +21,7 @@ class NewsDataSource : PageKeyedDataSource<Long,NewsModelItem>() {
             override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
                 Log.e("loadInitial","response: ${response.body().toString()}")
                 Log.e("URL","url: ${response.raw().request().url()}")
-                val itemList = response.body()?.itemList
+                val itemList = response.body()
                 itemList?.let { callback.onResult(it, null, 2L) }
                 newsLiveData.postValue(response.body())
             }
@@ -43,7 +43,7 @@ class NewsDataSource : PageKeyedDataSource<Long,NewsModelItem>() {
             override fun onResponse(call: Call<NewsModel>, response: Response<NewsModel>) {
                 Log.e("loadAfter","response: ${response.body().toString()}")
                 Log.e("URL next","url: ${response.raw().request().url()}")
-                val itemList = response.body()?.itemList
+                val itemList = response.body()
                 itemList?.let { callback.onResult(it,  params.key+1) }
                 newsLiveData.postValue(response.body())
             }
